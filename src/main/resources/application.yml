@@ -21,8 +21,8 @@ spring:
   data:
     web:
       pageable:
-        default-page-size: 10
-        max-page-size: 2000
+        default-page-size: 12
+        max-page-size: 200
         one-indexed-parameters: true
 
   # Swagger 설정

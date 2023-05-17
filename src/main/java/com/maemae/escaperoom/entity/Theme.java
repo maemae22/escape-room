@@ -25,10 +25,10 @@ public class Theme {
     private String name;
     private String genre;
     private String activity;
-    private int difficult;
-    private int limitTime;
-    private int recommendStart;
-    private int recommendEnd;
+    private Integer difficult;
+    private Integer limitTime;
+    private Integer recommendStart;
+    private Integer recommendEnd;
 
     @Column(length = 500)
     private String info;

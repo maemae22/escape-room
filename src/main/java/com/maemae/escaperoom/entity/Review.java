@@ -3,6 +3,8 @@ package com.maemae.escaperoom.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class Review {
 
     @Id
@@ -32,6 +35,8 @@ public class Review {
     @Column(length = 700)
     private String content;
 
+    @CreatedDate
     private LocalDateTime indate;
+
     private Double rating;
 }

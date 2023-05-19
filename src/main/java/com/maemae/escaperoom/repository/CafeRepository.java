@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CafeRepository extends JpaRepository<Cafe, Long> {
+public interface CafeRepository extends JpaRepository<Cafe, Long>, MemberRepositoryCustom {
 
     Page<Cafe> findAll(Pageable pageable);
 }

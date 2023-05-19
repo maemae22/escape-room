@@ -1,6 +1,7 @@
 package com.maemae.escaperoom.dto;
 
 import com.maemae.escaperoom.entity.Cafe;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 @Data
@@ -22,5 +23,16 @@ public class CafeDTO {
         this.address = cafe.getAddress();
         this.domain = cafe.getDomain();
         this.location = cafe.getLocation();
+    }
+
+    @QueryProjection
+    public CafeDTO(Long cafeId, String name, String phoneNumber, String bhours, String address, String domain, String location) {
+        this.cafeId = cafeId;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.bhours = bhours;
+        this.address = address;
+        this.domain = domain;
+        this.location = location;
     }
 }

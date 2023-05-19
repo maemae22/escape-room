@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CafeService {
@@ -15,5 +17,9 @@ public class CafeService {
 
     public Page<CafeDTO> cafeAllList(Pageable pageable) {
         return cafeRepository.findAll(pageable).map(CafeDTO::new);
+    }
+
+    public Page<CafeDTO> cafeSearchList(List<String> loc, String keyword, Pageable pageable) {
+        return cafeRepository.cafeSearchPage(loc, keyword, pageable);
     }
 }

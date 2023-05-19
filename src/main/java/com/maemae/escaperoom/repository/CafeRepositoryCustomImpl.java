@@ -14,11 +14,11 @@ import java.util.List;
 import static com.maemae.escaperoom.entity.QCafe.cafe;
 import static org.springframework.util.StringUtils.hasText;
 
-public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
+public class CafeRepositoryCustomImpl implements CafeRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public MemberRepositoryCustomImpl(JPAQueryFactory queryFactory) {
+    public CafeRepositoryCustomImpl(JPAQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
     }
 

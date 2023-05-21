@@ -6,6 +6,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 application-profile.yml
+src/main/resources/keystore.p12
 
 # User-specific stuff
 .idea/**/workspace.xml

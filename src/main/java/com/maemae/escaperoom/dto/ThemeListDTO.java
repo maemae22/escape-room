@@ -32,4 +32,8 @@ public class ThemeListDTO {
         this.location = location;
         this.ratingAvg = ratingAvg;
     }
+
+    public void changeImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

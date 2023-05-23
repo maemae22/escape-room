@@ -5,6 +5,8 @@ import com.maemae.escaperoom.dto.ThemeListDTO;
 import com.maemae.escaperoom.entity.QCafe;
 import com.maemae.escaperoom.entity.QReview;
 import com.maemae.escaperoom.entity.QTheme;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -38,7 +40,7 @@ public class ThemeRepositoryCustomImpl implements ThemeRepositoryCustom {
                         theme.imageUrl,
                         cafe.name,
                         cafe.location,
-                        review.rating.avg().coalesce(-1.0)
+                        Expressions.template(Double.class, "ROUND({0}, 2)", review.rating.avg().coalesce(-1.0))
                 ))
                 .from(theme)
                 .leftJoin(theme.cafe, cafe)

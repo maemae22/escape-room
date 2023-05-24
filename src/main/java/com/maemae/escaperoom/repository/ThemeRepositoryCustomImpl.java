@@ -1,6 +1,8 @@
 package com.maemae.escaperoom.repository;
 
+import com.maemae.escaperoom.dto.QThemeDetailDTO;
 import com.maemae.escaperoom.dto.QThemeListDTO;
+import com.maemae.escaperoom.dto.ThemeDetailDTO;
 import com.maemae.escaperoom.dto.ThemeListDTO;
 import com.maemae.escaperoom.entity.QCafe;
 import com.maemae.escaperoom.entity.QReview;
@@ -56,5 +58,33 @@ public class ThemeRepositoryCustomImpl implements ThemeRepositoryCustom {
                 .from(theme);
 
         return PageableExecutionUtils.getPage(themeListContent, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public ThemeDetailDTO themeDetail(Long themeId) {
+
+        return queryFactory
+                .select(new QThemeDetailDTO(
+                        theme.id,
+                        theme.name,
+                        theme.genre,
+                        theme.activity,
+                        theme.difficult,
+                        theme.limitTime,
+                        theme.recommendStart,
+                        theme.recommendEnd,
+                        theme.info,
+                        theme.imageUrl,
+                        cafe.id,
+                        cafe.name,
+                        cafe.domain,
+                        cafe.location,
+                        Expressions.template(Double.class, "ROUND({0}, 2)", review.rating.avg().coalesce(-1.0))
+                ))
+                .from(theme)
+                .leftJoin(theme.cafe, cafe)
+                .leftJoin(theme.reviews, review)
+                .where(theme.id.eq(themeId))
+                .fetchOne();
     }
 }

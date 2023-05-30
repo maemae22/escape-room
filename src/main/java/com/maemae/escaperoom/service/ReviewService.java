@@ -1,6 +1,8 @@
 package com.maemae.escaperoom.service;
 
 import com.maemae.escaperoom.dto.ReviewDTO;
+import com.maemae.escaperoom.dto.ReviewOneDTO;
+import com.maemae.escaperoom.entity.Review;
 import com.maemae.escaperoom.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,5 +27,15 @@ public class ReviewService {
         }
         result.put("resultCode", "success");
         return result;
+    }
+
+    public ReviewOneDTO reviewOneByReviewId(Long reviewId) {
+        try {
+            Review review = reviewRepository.findReviewOneById(reviewId).get();
+            return new ReviewOneDTO(review);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

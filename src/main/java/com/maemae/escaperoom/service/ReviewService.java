@@ -2,6 +2,7 @@ package com.maemae.escaperoom.service;
 
 import com.maemae.escaperoom.dto.ReviewDTO;
 import com.maemae.escaperoom.dto.ReviewOneDTO;
+import com.maemae.escaperoom.dto.ReviewPasswordCheckDTO;
 import com.maemae.escaperoom.dto.ReviewUpdateDTO;
 import com.maemae.escaperoom.entity.Review;
 import com.maemae.escaperoom.repository.ReviewRepository;
@@ -73,5 +74,20 @@ public class ReviewService {
             return "failed";
         }
         return "success";
+    }
+
+    public String reviewPasswordCheck(ReviewPasswordCheckDTO reviewPasswordCheckDTO) {
+        try {
+            String findPassword = reviewRepository.findReviewPasswordById(reviewPasswordCheckDTO.getReviewId());
+
+            if (reviewPasswordCheckDTO.getPassword().equals(findPassword)) {
+                return "success";
+            } else {
+                return "failed";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "failed";
+        }
     }
 }

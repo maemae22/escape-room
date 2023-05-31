@@ -2,6 +2,7 @@ package com.maemae.escaperoom.controller;
 
 import com.maemae.escaperoom.dto.ReviewDTO;
 import com.maemae.escaperoom.dto.ReviewOneDTO;
+import com.maemae.escaperoom.dto.ReviewPasswordCheckDTO;
 import com.maemae.escaperoom.dto.ReviewUpdateDTO;
 import com.maemae.escaperoom.service.ReviewService;
 import lombok.AllArgsConstructor;
@@ -58,6 +59,20 @@ public class ReviewController {
             return new ResponseEntity(updateReviewResult, HttpStatus.OK);
         } else {
             return new ResponseEntity(updateReviewResult, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/review/check")
+    public ResponseEntity<String> reviewPasswordCheck(@RequestBody ReviewPasswordCheckDTO reviewPasswordCheckDTO) {
+        String checkResult = reviewService.reviewPasswordCheck(reviewPasswordCheckDTO);
+        return returnResponseEntityByResultMessage(checkResult);
+    }
+
+    public ResponseEntity<String> returnResponseEntityByResultMessage(String resultMessage) {
+        if (resultMessage.equals("success")) {
+            return new ResponseEntity(resultMessage, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(resultMessage, HttpStatus.BAD_REQUEST);
         }
     }
 

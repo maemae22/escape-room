@@ -15,4 +15,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query("select r from Review r where r.theme.id= :themeId")
     Page<Review> findReviewListByThemeId(@Param("themeId") Long themeId, Pageable pageable);
+
+    @Query("select r.password from Review r where r.id= :reviewId")
+    String findReviewPasswordById(@Param("reviewId") Long reviewId);
 }

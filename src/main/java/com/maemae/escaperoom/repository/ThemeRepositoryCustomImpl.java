@@ -1,9 +1,6 @@
 package com.maemae.escaperoom.repository;
 
-import com.maemae.escaperoom.dto.QThemeDetailDTO;
-import com.maemae.escaperoom.dto.QThemeListDTO;
-import com.maemae.escaperoom.dto.ThemeDetailDTO;
-import com.maemae.escaperoom.dto.ThemeListDTO;
+import com.maemae.escaperoom.dto.*;
 import com.maemae.escaperoom.entity.QCafe;
 import com.maemae.escaperoom.entity.QReview;
 import com.maemae.escaperoom.entity.QTheme;
@@ -86,5 +83,26 @@ public class ThemeRepositoryCustomImpl implements ThemeRepositoryCustom {
                 .leftJoin(theme.reviews, review)
                 .where(theme.id.eq(themeId))
                 .fetchOne();
+    }
+
+    @Override
+    public List<ThemeSimpleListDTO> themeListByCafeId(Long cafeId) {
+
+        return queryFactory
+                .select(new QThemeSimpleListDTO(
+                        theme.id,
+                        theme.name,
+                        theme.genre,
+                        theme.recommendStart,
+                        theme.recommendEnd,
+                        theme.imageUrl,
+                        Expressions.template(Double.class, "ROUND({0}, 2)", review.rating.avg().coalesce(-1.0))
+                ))
+                .from(theme)
+                .leftJoin(theme.reviews, review)
+                .where(theme.cafe.id.eq(cafeId))
+                .groupBy(theme.id)
+                .orderBy(review.rating.avg().desc().nullsLast())
+                .fetch();
     }
 }

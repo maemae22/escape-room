@@ -2,6 +2,7 @@ package com.maemae.escaperoom.controller;
 
 import com.maemae.escaperoom.dto.ReviewDTO;
 import com.maemae.escaperoom.dto.ReviewOneDTO;
+import com.maemae.escaperoom.dto.ReviewUpdateDTO;
 import com.maemae.escaperoom.service.ReviewService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -48,6 +49,16 @@ public class ReviewController {
                              @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<ReviewOneDTO> reviewListByThemeId = reviewService.reviewListByThemeId(themeId, pageable);
         return new Result(reviewListByThemeId);
+    }
+
+    @PutMapping("/review/{reviewId}")
+    public ResponseEntity<String> reviewUpdate(@PathVariable Long reviewId, ReviewUpdateDTO reviewUpdateDTO) {
+        String updateReviewResult = reviewService.reviewUpdate(reviewId, reviewUpdateDTO);
+        if (updateReviewResult.equals("success")) {
+            return new ResponseEntity(updateReviewResult, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(updateReviewResult, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Data

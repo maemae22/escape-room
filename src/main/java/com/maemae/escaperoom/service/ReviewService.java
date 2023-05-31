@@ -2,12 +2,14 @@ package com.maemae.escaperoom.service;
 
 import com.maemae.escaperoom.dto.ReviewDTO;
 import com.maemae.escaperoom.dto.ReviewOneDTO;
+import com.maemae.escaperoom.dto.ReviewUpdateDTO;
 import com.maemae.escaperoom.entity.Review;
 import com.maemae.escaperoom.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 
@@ -59,5 +61,17 @@ public class ReviewService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Transactional
+    public String reviewUpdate(Long reviewId, ReviewUpdateDTO reviewUpdateDTO) {
+        try {
+            Review findReview = reviewRepository.findReviewOneById(reviewId).get();
+            findReview.updateReview(reviewUpdateDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "failed";
+        }
+        return "success";
     }
 }

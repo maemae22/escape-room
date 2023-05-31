@@ -38,4 +38,14 @@ public class ReviewService {
         }
         return null;
     }
+
+    public String reviewDelete(Long reviewId) {
+        try {
+            reviewRepository.deleteById(reviewId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "failed";
+        }
+        return "success";
+    }
 }

@@ -6,6 +6,7 @@ import com.maemae.escaperoom.entity.QReview;
 import com.maemae.escaperoom.entity.QTheme;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -103,6 +104,33 @@ public class ThemeRepositoryCustomImpl implements ThemeRepositoryCustom {
                 .where(theme.cafe.id.eq(cafeId))
                 .groupBy(theme.id)
                 .orderBy(review.rating.avg().desc().nullsLast())
+                .fetch();
+    }
+
+    @Override
+    public List<ThemeSimpleListDTO> sameCafeOtherThemeList(Long themeId) {
+
+        QTheme themeSub = new QTheme("themeSub");
+
+        return queryFactory
+                .select(new QThemeSimpleListDTO(
+                        theme.id,
+                        theme.name,
+                        theme.genre,
+                        theme.recommendStart,
+                        theme.recommendEnd,
+                        theme.imageUrl,
+                        Expressions.template(Double.class, "ROUND({0}, 2)", review.rating.avg().coalesce(-1.0))
+                ))
+                .from(theme)
+                .leftJoin(theme.reviews, review)
+                .where(theme.cafe.id.eq(
+                        JPAExpressions
+                                .select(themeSub.cafe.id)
+                                .from(themeSub)
+                                .where(themeSub.id.eq(themeId))
+                ), theme.id.ne(themeId))
+                .groupBy(theme.id)
                 .fetch();
     }
 }

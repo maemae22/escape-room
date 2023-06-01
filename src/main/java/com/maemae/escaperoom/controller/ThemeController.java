@@ -2,6 +2,7 @@ package com.maemae.escaperoom.controller;
 
 import com.maemae.escaperoom.dto.ThemeDetailDTO;
 import com.maemae.escaperoom.dto.ThemeListDTO;
+import com.maemae.escaperoom.dto.ThemeSearchCondition;
 import com.maemae.escaperoom.dto.ThemeSimpleListDTO;
 import com.maemae.escaperoom.service.ThemeService;
 import lombok.AllArgsConstructor;
@@ -44,6 +45,12 @@ public class ThemeController {
     public Result sameCafeOtherTwoThemeList(@RequestParam(value = "id") Long themeId) {
         List<ThemeSimpleListDTO> twoThemeList = themeService.sameCafeOtherTwoThemeList(themeId);
         return new Result(twoThemeList);
+    }
+
+    @GetMapping("/theme/search")
+    public Result themeSearchList(ThemeSearchCondition condition, Pageable pageable) {
+        Page<ThemeListDTO> themeSearchList = themeService.themeSearchList(condition, pageable);
+        return new Result(themeSearchList);
     }
 
     @Data

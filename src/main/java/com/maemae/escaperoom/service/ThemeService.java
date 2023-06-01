@@ -2,6 +2,7 @@ package com.maemae.escaperoom.service;
 
 import com.maemae.escaperoom.dto.ThemeDetailDTO;
 import com.maemae.escaperoom.dto.ThemeListDTO;
+import com.maemae.escaperoom.dto.ThemeSearchCondition;
 import com.maemae.escaperoom.dto.ThemeSimpleListDTO;
 import com.maemae.escaperoom.repository.ThemeRepository;
 import lombok.RequiredArgsConstructor;
@@ -76,5 +77,18 @@ public class ThemeService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public Page<ThemeListDTO> themeSearchList(ThemeSearchCondition condition, Pageable pageable) {
+        Page<ThemeListDTO> page = themeRepository.themeSearchPage(condition, pageable);
+
+        List<ThemeListDTO> content = page.getContent();
+
+        for (ThemeListDTO dto : content) {
+            String S3imgUrl = s3UploadService.getThumbnailPath("theme_img/"+dto.getImageUrl());
+            dto.changeImageUrl(S3imgUrl);
+        }
+
+        return new PageImpl<>(content, pageable, page.getTotalElements());
     }
 }

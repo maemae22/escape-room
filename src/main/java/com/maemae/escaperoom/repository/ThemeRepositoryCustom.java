@@ -12,4 +12,5 @@ public interface ThemeRepositoryCustom {
     Page<ThemeListDTO> themeAllListPage(Pageable pageable);
     ThemeDetailDTO themeDetail(Long themeId);
     List<ThemeSimpleListDTO> themeListByCafeId(Long cafeId);
+    List<ThemeSimpleListDTO> sameCafeOtherThemeList(Long themeId);
 }

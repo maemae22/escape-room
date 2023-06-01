@@ -40,6 +40,12 @@ public class ThemeController {
         return new Result(themeListByCafeId);
     }
 
+    @GetMapping("/theme/others")
+    public Result sameCafeOtherTwoThemeList(@RequestParam(value = "id") Long themeId) {
+        List<ThemeSimpleListDTO> twoThemeList = themeService.sameCafeOtherTwoThemeList(themeId);
+        return new Result(twoThemeList);
+    }
+
     @Data
     @AllArgsConstructor
     static class Result<T> {

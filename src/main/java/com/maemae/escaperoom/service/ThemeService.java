@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -52,5 +53,28 @@ public class ThemeService {
         }
 
         return themeList;
+    }
+
+    public List<ThemeSimpleListDTO> sameCafeOtherTwoThemeList(Long themeId) {
+
+        try {
+            List<ThemeSimpleListDTO> themeList = themeRepository.sameCafeOtherThemeList(themeId);
+            Collections.shuffle(themeList); // 리스트를 무작위로 섞음
+
+            for (ThemeSimpleListDTO dto : themeList) {
+                String S3imgUrl = s3UploadService.getThumbnailPath("theme_img/"+dto.getImageUrl());
+                dto.changeImageUrl(S3imgUrl);
+            }
+
+            if (themeList.size()<2) {
+                return themeList;
+            } else {
+                List<ThemeSimpleListDTO> randomTwoThemes = themeList.subList(0, 2);
+                return randomTwoThemes;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

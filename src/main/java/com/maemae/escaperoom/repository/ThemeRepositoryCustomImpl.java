@@ -4,6 +4,9 @@ import com.maemae.escaperoom.dto.*;
 import com.maemae.escaperoom.entity.QCafe;
 import com.maemae.escaperoom.entity.QReview;
 import com.maemae.escaperoom.entity.QTheme;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
@@ -18,6 +21,7 @@ import java.util.List;
 import static com.maemae.escaperoom.entity.QCafe.*;
 import static com.maemae.escaperoom.entity.QReview.*;
 import static com.maemae.escaperoom.entity.QTheme.*;
+import static org.springframework.util.StringUtils.hasText;
 
 public class ThemeRepositoryCustomImpl implements ThemeRepositoryCustom {
 
@@ -132,5 +136,87 @@ public class ThemeRepositoryCustomImpl implements ThemeRepositoryCustom {
                 ), theme.id.ne(themeId))
                 .groupBy(theme.id)
                 .fetch();
+    }
+
+    @Override
+    public Page<ThemeListDTO> themeSearchPage(ThemeSearchCondition condition, Pageable pageable) {
+
+        List<ThemeListDTO> themeListContent = queryFactory
+                .select(new QThemeListDTO(
+                        theme.id,
+                        theme.name,
+                        theme.genre,
+                        theme.recommendStart,
+                        theme.recommendEnd,
+                        theme.imageUrl,
+                        cafe.name,
+                        cafe.location,
+                        Expressions.template(Double.class, "ROUND({0}, 2)", review.rating.avg().coalesce(-1.0))
+                ))
+                .from(theme)
+                .leftJoin(theme.cafe, cafe)
+                .leftJoin(theme.reviews, review)
+                .where(
+                        locationIn(condition.getLocation()),
+                        genreIn(condition.getGenre()),
+                        difficultIn(condition.getDifficult()),
+                        activityIn(condition.getActivity()),
+                        peopleNumInclude(condition.getPeopleNum()),
+                        keywordContaining(condition.getKeyword())
+                )
+                .groupBy(theme.id)
+                .orderBy(sort(condition.getSorting()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(theme.count())
+                .from(theme)
+                .leftJoin(theme.cafe, cafe)
+                .where(
+                        locationIn(condition.getLocation()),
+                        genreIn(condition.getGenre()),
+                        difficultIn(condition.getDifficult()),
+                        activityIn(condition.getActivity()),
+                        peopleNumInclude(condition.getPeopleNum()),
+                        keywordContaining(condition.getKeyword())
+                );
+
+        return PageableExecutionUtils.getPage(themeListContent, pageable, countQuery::fetchOne);
+    }
+
+    private BooleanExpression locationIn(List<String> locations) {
+        return locations == null ? null : ( !locations.isEmpty() ? cafe.location.in(locations) : null );
+    }
+
+    private BooleanExpression genreIn(List<String> genres) {
+        return genres == null ? null : ( !genres.isEmpty() ? theme.genre.in(genres) : null );
+    }
+
+    private BooleanExpression difficultIn(List<Integer> difficult) {
+        return difficult == null ? null : ( !difficult.isEmpty() ? theme.difficult.in(difficult) : null );
+    }
+
+    private BooleanExpression activityIn(List<String> activities) {
+        return activities == null ? null : ( !activities.isEmpty() ? theme.activity.in(activities) : null );
+    }
+
+    private BooleanExpression peopleNumInclude(Integer peopleNum) {
+        return peopleNum != null ? theme.recommendStart.loe(peopleNum).and(theme.recommendEnd.goe(peopleNum)) : null;
+    }
+
+    private BooleanExpression keywordContaining(String keyword) {
+        return hasText(keyword) ? theme.name.contains(keyword) : null;
+    }
+
+    private OrderSpecifier sort(String sorting) {
+        if (hasText(sorting) && sorting.equals("name")) {
+            return theme.name.asc();
+        } else if (hasText(sorting) && sorting.equals("location")) {
+            return cafe.location.asc();
+        } else {
+            return review.rating.avg().desc().nullsLast();
+        }
     }
 }

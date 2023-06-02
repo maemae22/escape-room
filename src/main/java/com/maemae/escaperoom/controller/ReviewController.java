@@ -25,7 +25,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping("/review/insert")
-    public HashMap<String, String> reviewInsert(ReviewDTO reviewDTO) {
+    public HashMap<String, String> reviewInsert(@RequestBody ReviewDTO reviewDTO) {
         return reviewService.reviewInsert(reviewDTO);
     }
 
@@ -53,7 +53,8 @@ public class ReviewController {
     }
 
     @PutMapping("/review/{reviewId}")
-    public ResponseEntity<String> reviewUpdate(@PathVariable Long reviewId, ReviewUpdateDTO reviewUpdateDTO) {
+    public ResponseEntity<String> reviewUpdate(@PathVariable Long reviewId,
+                                               @RequestBody ReviewUpdateDTO reviewUpdateDTO) {
         String updateReviewResult = reviewService.reviewUpdate(reviewId, reviewUpdateDTO);
         if (updateReviewResult.equals("success")) {
             return new ResponseEntity(updateReviewResult, HttpStatus.OK);

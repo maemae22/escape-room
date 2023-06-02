@@ -25,8 +25,9 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping("/review/insert")
-    public HashMap<String, String> reviewInsert(@RequestBody ReviewDTO reviewDTO) {
-        return reviewService.reviewInsert(reviewDTO);
+    public ResponseEntity<String> reviewInsert(@RequestBody ReviewDTO reviewDTO) {
+        String insertReviewResult = reviewService.reviewInsert(reviewDTO);
+        return responseEntityByResultMessage(insertReviewResult);
     }
 
     @GetMapping("/review")

@@ -40,9 +40,10 @@ public class ReviewService {
         return null;
     }
 
+    @Transactional
     public String reviewDelete(Long reviewId) {
         try {
-            reviewRepository.deleteById(reviewId);
+            reviewRepository.deleteReviewByReviewId(reviewId);
         } catch (Exception e) {
             e.printStackTrace();
             return "failed";

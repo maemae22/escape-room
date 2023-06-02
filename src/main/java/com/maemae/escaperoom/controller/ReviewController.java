@@ -38,11 +38,7 @@ public class ReviewController {
     @DeleteMapping("/review/{reviewId}")
     public ResponseEntity<String> reviewDelete(@PathVariable Long reviewId) {
         String deleteReviewResult = reviewService.reviewDelete(reviewId);
-        if (deleteReviewResult.equals("success")) {
-            return new ResponseEntity(deleteReviewResult, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(deleteReviewResult, HttpStatus.BAD_REQUEST);
-        }
+        return responseEntityByResultMessage(deleteReviewResult);
     }
 
     @GetMapping("/review-list")
@@ -56,20 +52,16 @@ public class ReviewController {
     public ResponseEntity<String> reviewUpdate(@PathVariable Long reviewId,
                                                @RequestBody ReviewUpdateDTO reviewUpdateDTO) {
         String updateReviewResult = reviewService.reviewUpdate(reviewId, reviewUpdateDTO);
-        if (updateReviewResult.equals("success")) {
-            return new ResponseEntity(updateReviewResult, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(updateReviewResult, HttpStatus.BAD_REQUEST);
-        }
+        return responseEntityByResultMessage(updateReviewResult);
     }
 
     @PostMapping("/review/check")
     public ResponseEntity<String> reviewPasswordCheck(@RequestBody ReviewPasswordCheckDTO reviewPasswordCheckDTO) {
         String checkResult = reviewService.reviewPasswordCheck(reviewPasswordCheckDTO);
-        return returnResponseEntityByResultMessage(checkResult);
+        return responseEntityByResultMessage(checkResult);
     }
 
-    public ResponseEntity<String> returnResponseEntityByResultMessage(String resultMessage) {
+    public ResponseEntity<String> responseEntityByResultMessage(String resultMessage) {
         if (resultMessage.equals("success")) {
             return new ResponseEntity(resultMessage, HttpStatus.OK);
         } else {

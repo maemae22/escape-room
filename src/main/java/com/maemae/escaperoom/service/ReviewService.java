@@ -20,18 +20,14 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
-    public HashMap<String, String> reviewInsert(ReviewDTO reviewDTO) {
-        HashMap<String, String> result = new HashMap<>();
-
+    public String reviewInsert(ReviewDTO reviewDTO) {
         try {
             reviewRepository.save(reviewDTO.toEntity());
         } catch (Exception e) {
             e.printStackTrace();
-            result.put("resultCode", "failed");
-            return result;
+            return "failed";
         }
-        result.put("resultCode", "success");
-        return result;
+        return "success";
     }
 
     public ReviewOneDTO reviewOneByReviewId(Long reviewId) {
@@ -44,9 +40,10 @@ public class ReviewService {
         return null;
     }
 
+    @Transactional
     public String reviewDelete(Long reviewId) {
         try {
-            reviewRepository.deleteById(reviewId);
+            reviewRepository.deleteReviewByReviewId(reviewId);
         } catch (Exception e) {
             e.printStackTrace();
             return "failed";

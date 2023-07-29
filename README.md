@@ -20,7 +20,7 @@ IDE : IntelliJ<br>
 Tools : Git, GitHub, GitKraken, DBeaver, Postman<br>
 
 ## Project Architecture
-<img src="https://github.com/maemae22/escape-room/assets/101652279/0332070e-14cd-4911-bb81-af764176be37" style="width: 50%;">
+<img src="https://github.com/maemae22/escape-room/assets/101652279/0332070e-14cd-4911-bb81-af764176be37" style="width: 70%;">
 
 ## 구현 기능
 ### 1. 카페 검색

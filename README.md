@@ -24,7 +24,7 @@ Tools : Git, GitHub, GitKraken, DBeaver, Postman<br>
 ### 1. 카페 검색
 #### (1) 카페 검색 - 지역 검색
 - 지역 복수 선택 가능
-<img src="https://blog.kakaocdn.net/dn/dxvcJi/btsph8OkTaA/NAuFIHPABKckqEY4795Xmk/img.gif">
+<img src="https://github.com/maemae22/escape-room/assets/101652279/8b0aa35a-bc1c-4d0d-9fa4-c2c2c7301913" style="width: 40%;">
 
 ### 2. 테마 검색
 

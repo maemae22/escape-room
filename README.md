@@ -76,4 +76,6 @@ Tools : Git, GitHub, GitKraken, DBeaver, Postman<br>
 #### (4) 리뷰 조회
 <img src="https://github.com/maemae22/escape-room/assets/101652279/528c7c80-e32d-438a-8634-cf34529bed08" style="width: 50%;">
 
-
+<br>
+- 해당 테마에 등록된 리뷰가 없을 경우<br>
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fqi9zn%2FbtspsVlP7Dt%2FBMGpE7WhLcSqe5KxU5gkV1%2Fimg.png" style="width: 60%;">
